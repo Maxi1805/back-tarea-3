@@ -36,7 +36,7 @@ def get_llm_response(message):
             "messages": [
                 {
                     "role": "user",
-                    "content": f'Mensaje:{message} Contexto: {info}'
+                    "content": f'Mensaje: {message} Contesta solo con este contexto: {info}'
                 }
             ]
         })
