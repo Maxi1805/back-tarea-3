@@ -1,14 +1,21 @@
-from typing import Optional
-
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
+from pydantic import BaseModel
+from typing import List
+from src.search import get_llm_response
 
 app = FastAPI()
 
+class SearchRequest(BaseModel):
+    query: str
+
+class LLMResponse(BaseModel):
+    response: dict
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+@app.post("/search", response_model=LLMResponse)
+async def search_endpoint(request: SearchRequest):
+    response = get_llm_response(request.query)
+    return {"response": response}
