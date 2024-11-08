@@ -41,7 +41,7 @@ async def search_endpoint(request: SearchRequest):
     return {"response": response}
 
 origins = [
-    "http://localhost:5173",
+    "https://thriving-malasada-05ef03.netlify.app/",
 ]
 
 app.add_middleware(
