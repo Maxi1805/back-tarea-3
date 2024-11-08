@@ -7,6 +7,7 @@ app = FastAPI()
 
 class SearchRequest(BaseModel):
     query: str
+    movie: str
 
 class LLMResponse(BaseModel):
     response: dict
@@ -17,7 +18,7 @@ async def root():
 
 @app.post("/search", response_model=LLMResponse)
 async def search_endpoint(request: SearchRequest):
-    response = get_llm_response(request.query)
+    response = get_llm_response(request.query, request.movie)
     
     if "error" in response:
         error_message = response["error"]

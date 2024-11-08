@@ -10,12 +10,10 @@ load_dotenv()
 LLM_API_URL = os.getenv("LLM_API_URL")
 POSTGRES_CONNECTION = os.getenv("POSTGRES_CONNECTION")
 
-def search(message):
-    collection_name = "movies"
-
+def search(message, movie):
     vectorstore = PGVector(
         embeddings=CustomEmbeddings(),
-        collection_name=collection_name,
+        collection_name=movie,
         connection=POSTGRES_CONNECTION,
         use_jsonb=True,
     )
@@ -23,10 +21,10 @@ def search(message):
     results = vectorstore.similarity_search(message, k=3)
     return results
 
-def get_llm_response(message):
+def get_llm_response(message, movie):
     try:
         # Retrieve and format information for the query
-        info = [data.page_content for data in search(message)]
+        info = [data.page_content for data in search(message, movie)]
         info = "\n".join(info)
 
         # Make the POST request to the LLM API
